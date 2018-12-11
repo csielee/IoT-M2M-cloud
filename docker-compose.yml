@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   om2m-in-cse:
     build: 
@@ -8,16 +8,21 @@ services:
     stdin_open: true
     tty: true
     ports:
-     - "8080:8080"
+      - "8080:8080"
+      - "5683:5683"
     volumes:
-     - ./OM2M/config.ini:/home/in-ces/configuration
+      - "./OM2M/configuration/config.ini:/home/in-cse/configuration/config.ini"
+    depends_on:
+      - mqtt-broker
+    links:
+      - mqtt-broker
 
   mqtt-broker:
     image: eclipse-mosquitto:latest
     ports:
-     - "1883:1883"
-     - "9001:9001"
+      - "1883:1883"
+      - "9001:9001"
     volumes:
-     - ./MQTT/mosquitto.conf:/mosquitto/config/mosquitto.conf
-     - ./MQTT/data:/mosquitto/data
-     - ./MQTT/log:/mosquitto/log
+      - "./MQTT/config:/mosquitto/config"
+      - "./MQTT/data:/mosquitto/data"
+      - "./MQTT/log:/mosquitto/log"

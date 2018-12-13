@@ -63,7 +63,8 @@ typings/
 # for docker volume
 MQTT/data/
 MQTT/log/
+MQTT/config/pwfile
 
 # for OM2M source code
-org.eclipse.om2m/*
+org.eclipse.om2m
 OM2M/in-cse

@@ -56,11 +56,11 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
                     _end: page * perPage,
                 };*/
                 options.method = 'GET';
-                url = `${apiUrl}?fu=1&ty=${onem2mResourceType[resource]}`;
+                url = `${apiUrl}?fu=1`;
                 break;
             }
             case GET_ONE:
-                url = `${apiUrl}/${resource}/${params.id}`;
+                url = `${apiUrl.replace(/\/[^\/]*$/gi, '')}${params.id}`;
                 break;
              /*{
                 const { page, perPage } = params.pagination;
@@ -76,6 +76,13 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
             }*/
+            case GET_MANY: {
+                const query = {
+                    [`id_like`]: params.ids.join('|'),
+                };
+                url = `${apiUrl}/${resource}?${stringify(query)}`;
+                break;
+            }
             case UPDATE:
                 url = `${apiUrl}/${resource}/${params.id}`;
                 options.method = 'PUT';
@@ -90,13 +97,6 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
                 url = `${apiUrl}/${resource}/${params.id}`;
                 options.method = 'DELETE';
                 break;
-            case GET_MANY: {
-                const query = {
-                    [`id_like`]: params.ids.join('|'),
-                };
-                url = `${apiUrl}/${resource}?${stringify(query)}`;
-                break;
-            }
             default:
                 throw new Error(`Unsupported fetch action type ${type}`);
         }
@@ -134,10 +134,16 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
                     data: json["m2m:uril"].map(rn => {
                         return {
                             id:rn,
-                            rn:rn,
+                            rn:rn.match(/[^\/]*$/gi)[0],
                         }
                     }),
                     total: json["m2m:uril"].length,
+                }
+            case GET_ONE:
+                var rdata = json[Object.keys(json)[0]]
+                rdata.id = params.id
+                return {
+                    data: rdata    
                 }
             case CREATE:
                 return { data: { ...params.data, id: json.id } };

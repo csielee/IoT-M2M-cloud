@@ -25,7 +25,10 @@ import {
  * DELETE       => DELETE 
  */
 
-export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
+export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", password="admin") => {
+    const onem2mResourceType = {
+        'AE' : 2,
+    }
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
@@ -35,8 +38,14 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     const convertDataRequestToHTTP = (type, resource, params) => {
         let url = '';
         const options = {};
+        options.headers = new Headers({
+            Accept : "application/json",
+        }) 
+        options.headers.set('X-M2M-Origin', `${user}:${password}`)
         switch (type) {
-            case GET_LIST: {
+            case GET_LIST:
+            case GET_MANY_REFERENCE: {
+                /*
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
@@ -45,14 +54,15 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                     _order: order,
                     _start: (page - 1) * perPage,
                     _end: page * perPage,
-                };
-                url = `${apiUrl}/${resource}?${stringify(query)}`;
+                };*/
+                options.method = 'GET';
+                url = `${apiUrl}?fu=1&ty=${onem2mResourceType[resource]}`;
                 break;
             }
             case GET_ONE:
                 url = `${apiUrl}/${resource}/${params.id}`;
                 break;
-            case GET_MANY_REFERENCE: {
+             /*{
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
@@ -65,7 +75,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
-            }
+            }*/
             case UPDATE:
                 url = `${apiUrl}/${resource}/${params.id}`;
                 options.method = 'PUT';
@@ -105,7 +115,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
         switch (type) {
             case GET_LIST:
             case GET_MANY_REFERENCE:
-                if (!headers.has('x-total-count')) {
+                /*if (!headers.has('x-total-count')) {
                     throw new Error(
                         'The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
                     );
@@ -119,7 +129,16 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                             .pop(),
                         10
                     ),
-                };
+                };*/
+                return {
+                    data: json["m2m:uril"].map(rn => {
+                        return {
+                            id:rn,
+                            rn:rn,
+                        }
+                    }),
+                    total: json["m2m:uril"].length,
+                }
             case CREATE:
                 return { data: { ...params.data, id: json.id } };
             default:

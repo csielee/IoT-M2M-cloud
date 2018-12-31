@@ -12,8 +12,12 @@ services:
       #- "5683:5683"
     volumes:
       - "./OM2M/configuration/config.ini:/home/in-cse/configuration/config.ini"
+    environment:
+      - VIRTUAL_HOST=localhost
+      - VIRTUAL_PORT=8080
     depends_on:
       - mqtt-broker
+      - nginx-proxy
     links:
       - mqtt-broker
 
@@ -27,3 +31,11 @@ services:
       - "./MQTT/config:/mosquitto/config"
       - "./MQTT/data:/mosquitto/data"
       - "./MQTT/log:/mosquitto/log"
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "10002:80"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "./nginx/default_location.conf:/etc/nginx/vhost.d/default_location"

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "oneM2M IoT admin",
+  "name": "admin for oneM2M",
   "icons": [
     {
       "src": "favicon.ico",

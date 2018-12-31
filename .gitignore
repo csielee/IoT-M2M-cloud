@@ -68,3 +68,6 @@ MQTT/config/pwfile
 # for OM2M source code
 org.eclipse.om2m
 OM2M/in-cse
+
+# for vscode
+.vscode

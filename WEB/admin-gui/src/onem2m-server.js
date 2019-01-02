@@ -142,6 +142,12 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
             case GET_ONE:
                 var rdata = json[Object.keys(json)[0]]
                 rdata.id = params.id
+                // convert lbl
+                if (rdata.lbl) {
+                    rdata.lbl = rdata.lbl.map((l)=>{
+                        return {name:l}
+                    })
+                }
                 return {
                     data: rdata    
                 }

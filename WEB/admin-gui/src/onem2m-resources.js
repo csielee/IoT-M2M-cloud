@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Show, SimpleShowLayout, ShowController, ShowView, 
-    TextField, ArrayField, SingleFieldList, ChipField, 
+    TextField, ArrayField, SingleFieldList, ChipField, ReferenceField, NumberField,
     List, Datagrid, 
     ShowButton, ListButton,
 } from 'react-admin';
@@ -44,6 +44,9 @@ export const ResourceList = props => (
         <Datagrid>
             <TextField source="id" />
             <TextField label="resource Name" source="rn" />
+            <ReferenceField label="resource Type" source="id" reference="resources" linkType={false}>
+                <NumberField source="ty" />
+            </ReferenceField>
             <ShowButton />
         </Datagrid>
     </List>

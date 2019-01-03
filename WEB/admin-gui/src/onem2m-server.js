@@ -57,6 +57,9 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
                 };*/
                 options.method = 'GET';
                 url = `${apiUrl}?fu=1`;
+                if (resource === "airboxs") {
+                    url += '&ty=2&lbl=airbox'
+                }
                 break;
             }
             case GET_ONE:
@@ -166,7 +169,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
      */
     return (type, resource, params) => {
         // json-server doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
-        if (type === UPDATE_MANY) {
+        /*if (type === UPDATE_MANY) {
             return Promise.all(
                 params.ids.map(id =>
                     httpClient(`${apiUrl}/${resource}/${id}`, {
@@ -189,7 +192,34 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
             ).then(responses => ({
                 data: responses.map(response => response.json),
             }));
+        }*/
+        /*if (resource === "airboxs")
+            return new Promise((resolve, reject)=>{
+                resolve({data:[
+                    {id:0,rn:'hi',value:'wow'},
+                    {id:2,rn:'nonon',value:'cococ'},
+                ], total:2})
+            })*/
+
+
+        switch(type) {
+            case GET_MANY:
+                return Promise.all(
+                    params.ids.map(id => {
+                        const { url, options } = convertDataRequestToHTTP(
+                            GET_ONE,
+                            resource,
+                            {...params, id : id}
+                        );
+                        return httpClient(url, options)
+                    })
+                ).then(responses => ({
+                    data: responses.map(
+                        (response,index) => convertHTTPResponse(response, GET_ONE, resource, {...params, id:params.ids[index]})['data']
+                    ),
+                }));
         }
+
         const { url, options } = convertDataRequestToHTTP(
             type,
             resource,

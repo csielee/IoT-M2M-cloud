@@ -25,7 +25,7 @@ import {
  * DELETE       => DELETE 
  */
 
-export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", password="admin") => {
+const oneM2MDataProvider= (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", password="admin") => {
     const onem2mResourceType = {
         'AE' : 2,
     }
@@ -64,6 +64,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
             }
             case GET_ONE:
                 url = `${apiUrl.replace(/\/[^\/]*$/gi, '')}${params.id}`;
+                // get contentInstance by container/la
+                if (resource === "airboxs_data") {
+                    url += `/${params.dcnt?params.dcnt:'airRetriver'}/la`
+                }
                 break;
              /*{
                 const { page, perPage } = params.pagination;
@@ -211,12 +215,14 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
                             resource,
                             {...params, id : id}
                         );
-                        return httpClient(url, options)
+                        return httpClient(url, options).catch(e => e)
                     })
                 ).then(responses => ({
-                    data: responses.map(
-                        (response,index) => convertHTTPResponse(response, GET_ONE, resource, {...params, id:params.ids[index]})['data']
-                    ),
+                    data: responses.map((response,index) => {
+                        if (!response.json)
+                            return {}
+                        return convertHTTPResponse(response, GET_ONE, resource, {...params, id:params.ids[index]})['data']
+                    }),
                 }));
         }
 
@@ -230,3 +236,5 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, user="admin", passwor
         );
     };
 };
+
+export default oneM2MDataProvider('http://localhost:10002/~/in-cse')

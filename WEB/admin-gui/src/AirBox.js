@@ -14,6 +14,9 @@ import Grid from '@material-ui/core/Grid';
 import { GET_MANY } from 'react-admin';
 import PropTypes from 'prop-types';
 import DataProvider from './onem2m-server'
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
+import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
+import Refresh from '@material-ui/icons/Refresh'
 
 const cardStyle = {
     width: "99%",
@@ -76,6 +79,11 @@ class AirBoxGrid extends Component {
                     <CardHeader title={`AirBox ${id}`} avatar={<Toys />}/>
                     <CardContent style={{flexGrow: 1,}}>
                         <TextField label="AirBox Name" record={data[id]} source="rn" style={{'fontSize':'1.5em'}} />
+                        <CardActions style={{ textAlign : 'right'}}>
+                            <ShowButton variant="contained" label="Speed UP" icon={<KeyboardArrowUp/>}/>
+                            <ShowButton variant="contained" label="Speed DOWN" icon={<KeyboardArrowDown/>}/>
+                            <ShowButton variant="contained" color="secondary" label="Restart" icon={<Refresh/>}/>
+                        </CardActions>
                         <Grid container spacing={24}>
                             <Grid item xs={12}>
                                 <TimeSeriesField label="ppm" record={this.state.data[id]} source={["0.3um", "0.5um", "1um", "2.5um", "pm1", "pm2.5", "pm10"]} />
@@ -91,9 +99,6 @@ class AirBoxGrid extends Component {
                             </Grid>
                         </Grid>
                     </CardContent>
-                    <CardActions style={{ textAlign : 'right'}}>
-                        <ShowButton />
-                    </CardActions>
                 </Card>
             )}
             </div>

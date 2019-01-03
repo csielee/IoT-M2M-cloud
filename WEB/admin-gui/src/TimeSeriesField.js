@@ -30,7 +30,7 @@ class TimeSeriesField extends Component {
         const { label, source, record = {} } = this.props;
 
         return (
-            <ResponsiveContainer minWidth={200} width="99%" height={320} debounce={1} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <ResponsiveContainer minWidth={200} width="99%" height={320} debounce={1} margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
                 <LineChart data={this.state.timeSeries}>
                     <XAxis dataKey="time">
                         <Label value="Time" position="insideBottom"/>

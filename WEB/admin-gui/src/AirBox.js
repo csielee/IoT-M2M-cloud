@@ -10,7 +10,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
-import TimeSeriesField from './TimeSeriesField'
+import TimeSeriesField from './TimeSeriesField';
+import IndicatorField from './IndicatirField';
 
 const cardStyle = {
     width: "99%",
@@ -26,9 +27,10 @@ const AirBoxGrid = ({ids, data, basePath}) => (
         <Card key={id} style={cardStyle}>
             <CardHeader title={`AirBox ${id}`}/>
             <CardContent>
-                <TextField label="AirBox Name" record={data[id]} source="rn" style={{'font-size':'2.5em'}} />
+                <TextField label="AirBox Name" record={data[id]} source="rn" style={{'fontSize':'2.5em'}} />
 
                 <TimeSeriesField label="AQ" record={data[id]} />
+                <IndicatorField label="AQ" record={data[id]} />
             </CardContent>
             <CardActions style={{ textAlign : 'right'}}>
                 <ShowButton />

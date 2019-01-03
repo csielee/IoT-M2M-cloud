@@ -64,8 +64,6 @@ class AirBoxGrid extends Component {
                 })
             }
             this.timerID = setTimeout(this.updateData.bind(this), this.props.interVal);
-            console.log('set next timeout !!!')
-            console.log(newData)
         })
     }
 
@@ -89,13 +87,13 @@ class AirBoxGrid extends Component {
                                 <TimeSeriesField label="ppm" record={this.state.data[id]} source={["0.3um", "0.5um", "1um", "2.5um", "pm1", "pm2.5", "pm10"]} />
                             </Grid>
                             <Grid item xs={4}>
-                                <IndicatorField source="temperature" record={data[id]} interVal={10000} minValue={0} maxValue={100}/>
+                                <IndicatorField source="temperature" record={this.state.data[id]} minValue={0} maxValue={100}/>
                             </Grid>
                             <Grid item xs={4}>
-                                <IndicatorField source="humidaty" record={data[id]} interVal={10000} minValue={0} maxValue={100}/>
+                                <IndicatorField source="humidaty" record={this.state.data[id]} minValue={0} maxValue={100}/>
                             </Grid>
                             <Grid item xs={4}>
-                                <IndicatorField source="rpm" record={data[id]} interVal={10000} minValue={0} maxValue={6000}/>
+                                <IndicatorField source="rpm" record={this.state.data[id]} minValue={0} maxValue={6000}/>
                             </Grid>
                         </Grid>
                     </CardContent>

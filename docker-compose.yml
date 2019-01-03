@@ -11,7 +11,7 @@ services:
       - "10001:8080"
       #- "5683:5683"
     volumes:
-      - "./OM2M/configuration/config.ini:/home/in-cse/configuration/config.ini"
+      - "./OM2M/configuration/config.ini:/home/in-cse/configuration/config.ini:ro"
     environment:
       - VIRTUAL_HOST=localhost
       - VIRTUAL_PORT=8080
@@ -28,7 +28,7 @@ services:
       - "1883:1883"
       - "9001:9001"
     volumes:
-      - "./MQTT/config:/mosquitto/config"
+      - "./MQTT/config:/mosquitto/config:ro"
       - "./MQTT/data:/mosquitto/data"
       - "./MQTT/log:/mosquitto/log"
 

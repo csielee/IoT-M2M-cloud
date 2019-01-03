@@ -12,6 +12,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import TimeSeriesField from './TimeSeriesField';
 import IndicatorField from './IndicatirField';
+import Toys from '@material-ui/icons/Toys'
 
 const cardStyle = {
     width: "99%",
@@ -25,9 +26,9 @@ const AirBoxGrid = ({ids, data, basePath}) => (
     <div style={{margin:'1em'}}>
     {ids.map( id =>
         <Card key={id} style={cardStyle}>
-            <CardHeader title={`AirBox ${id}`}/>
+            <CardHeader title={`AirBox ${id}`} avatar={<Toys />}/>
             <CardContent>
-                <TextField label="AirBox Name" record={data[id]} source="rn" style={{'fontSize':'2.5em'}} />
+                <TextField label="AirBox Name" record={data[id]} source="rn" style={{'fontSize':'1.5em'}} />
 
                 <TimeSeriesField label="AQ" record={data[id]} />
                 <IndicatorField label="AQ" record={data[id]} />

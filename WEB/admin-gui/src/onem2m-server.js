@@ -12,6 +12,8 @@ import {
     DELETE_MANY,
 } from 'react-admin';
 
+
+
 /**
  * Maps react-admin queries to a onem2m-server powered REST API
  *
@@ -237,4 +239,6 @@ const oneM2MDataProvider= (apiUrl, httpClient = fetchUtils.fetchJson, user="admi
     };
 };
 
-export default oneM2MDataProvider('http://localhost:10002/~/in-cse')
+const CSE_URL = process.env.REACT_APP_CSE_URL || 'http://localhost:10002/~/in-cse';
+
+export default oneM2MDataProvider(CSE_URL)

@@ -1,5 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## oneM2M IoT admin
+
+### environment setting
+
+- `REACT_APP_CSE_URL`
+    - set which CSE you request resources
+    - defalut : `http://localhost:10002/~/in-cse`
+
 ## Available Scripts
 
 In the project directory, you can run:

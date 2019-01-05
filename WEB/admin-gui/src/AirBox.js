@@ -44,8 +44,9 @@ class AirBoxGrid extends Component {
         const {ids, data, basePath, seriesLength} = this.props;
         if (ids.length == 0)
             return;
-        DataProvider(GET_MANY, 'airboxs_data', {ids:ids, dcnt:'air-condition'}).then(response=>{
+        DataProvider(GET_MANY, 'airboxs_data', {ids:ids, dcnt:'airCondition'}).then(response=>{
             // response data is array
+            let dirty = false;
             const newData = response.data.reduce((prev, oneRecord, idx)=>{
                 const {con} = oneRecord;
 
@@ -53,12 +54,20 @@ class AirBoxGrid extends Component {
                     return prev;
 
                 oneRecord.con = con?JSON.parse(con):undefined;
-                if (!prev[oneRecord.id])
-                    prev[oneRecord.id] = []
-                prev[oneRecord.id] = prev[oneRecord.id].concat(oneRecord).slice(-seriesLength) 
+                if (!prev[oneRecord.id]) {
+                    prev[oneRecord.id] = [oneRecord]
+                    dirty = true;
+                }
+                else {
+                    if (prev[oneRecord.id].slice(-1)[0].ct != oneRecord.ct) {
+                        prev[oneRecord.id] = prev[oneRecord.id].concat(oneRecord).slice(-seriesLength)
+                        dirty = true;
+                    } 
+                }
+                 
                 return prev;
             }, this.state.data);
-            if(newData) {
+            if(newData && dirty) {
                 this.setState({
                     data : newData
                 })

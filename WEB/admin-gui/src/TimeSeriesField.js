@@ -22,7 +22,7 @@ const TimeSeriesField = ({ label, source, record = [] }) => {
                 <Tooltip />
                 <Legend verticalAlign="top" />
                 {source.map((s,idx)=>
-                    (<Line 
+                    (<Line key={idx}
                         type="monotone" 
                         dataKey={s} 
                         stroke={COLOR[idx % COLOR.length]}
@@ -39,7 +39,10 @@ const TimeSeriesField = ({ label, source, record = [] }) => {
 
 TimeSeriesField.propTypes = {
     label: PropTypes.string,
-    source: PropTypes.isRequired,
+    source: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.array,
+    ]).isRequired,
 };
 
 TimeSeriesField.defaultProps = {

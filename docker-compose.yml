@@ -28,7 +28,7 @@ services:
       - "1883:1883"
       - "9001:9001"
     volumes:
-      - "./MQTT/config:/mosquitto/config:ro"
+      - "./MQTT/config:/mosquitto/config"
       - "./MQTT/data:/mosquitto/data"
       - "./MQTT/log:/mosquitto/log"
 
